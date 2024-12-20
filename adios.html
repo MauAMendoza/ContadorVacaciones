@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        #timer {
+            font-size: 2rem;
+            margin: 20px 0;
+        }
+        button, input {
+            font-size: 1rem;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        input {
+            width: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Horas para ya no volvernos a ver</h1>
+    <h2>(Hasta que regresemos de vacaciones)</h2>
+    <div id="timer">00:00:00</div>
+    <label for="endDateTime">Fecha:</label>
+    <input type="datetime-local" id="endDateTime">
+    <br>
+    <button id="startButton">Inicio</button>
+
+    <script>
+        const timerElement = document.getElementById('timer');
+        const startButton = document.getElementById('startButton');
+        const endDateTimeInput = document.getElementById('endDateTime');
+
+        let countdownInterval;
+
+        function startCountdown() {
+            const endDateTimeValue = endDateTimeInput.value;
+            if (!endDateTimeValue) {
+                alert('Agregue una fecha y hora de finalización.');
+                return;
+            }
+
+            const endTime = new Date(endDateTimeValue).getTime();
+
+            countdownInterval = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = endTime - now;
+
+                if (distance <= 0) {
+                    clearInterval(countdownInterval);
+                    timerElement.textContent = "Time's up!";
+                    return;
+                }
+
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                timerElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        startButton.addEventListener('click', () => {
+            if (countdownInterval) clearInterval(countdownInterval);
+            startCountdown();
+        });
+    </script>
+</body>
+</html>
