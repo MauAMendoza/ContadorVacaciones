@@ -23,16 +23,32 @@
         input {
             width: auto;
         }
+        .side-image {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100px;
+            height: auto;
+        }
+        .left-image {
+            left: 0;
+        }
+        .right-image {
+            right: 0;
+        }
     </style>
 </head>
 <body>
-    <h1>Horas para ya no volvernos a ver</h1>
+    <h1>Horas para ya no volver a vernos</h1>
     <h2>(Hasta que regresemos de vacaciones)</h2>
     <div id="timer">00:00:00</div>
-    <label for="endDateTime">Fecha:</label>
+    <label for="endDateTime">Fecha y Hora:</label>
     <input type="datetime-local" id="endDateTime">
     <br>
     <button id="startButton">Inicio</button>
+
+    <img src="2.gif" alt="Side Image" class="side-image left-image">
+    <img src="2.gif" alt="Side Image" class="side-image right-image">
 
     <script>
         const timerElement = document.getElementById('timer');
@@ -44,7 +60,7 @@
         function startCountdown() {
             const endDateTimeValue = endDateTimeInput.value;
             if (!endDateTimeValue) {
-                alert('Agregue una fecha y hora de finalización.');
+                alert('Coloque una fecha y hora.');
                 return;
             }
 
@@ -56,7 +72,8 @@
 
                 if (distance <= 0) {
                     clearInterval(countdownInterval);
-                    timerElement.textContent = "Time's up!";
+                    timerElement.textContent = "FUGAAAA!!!!";
+                    showImageAlert();
                     return;
                 }
 
@@ -66,6 +83,39 @@
 
                 timerElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
             }, 1000);
+        }
+
+        function showImageAlert() {
+            const img = new Image();
+            img.src = '1.jpg';
+            img.alt = 'Alert Image';
+            img.style.maxWidth = '100%';
+            img.style.height = 'auto';
+
+            const alertDiv = document.createElement('div');
+            alertDiv.style.position = 'fixed';
+            alertDiv.style.top = '50%';
+            alertDiv.style.left = '50%';
+            alertDiv.style.transform = 'translate(-50%, -50%)';
+            alertDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+            alertDiv.style.padding = '20px';
+            alertDiv.style.borderRadius = '10px';
+            alertDiv.style.textAlign = 'center';
+
+            const closeButton = document.createElement('button');
+            closeButton.textContent = 'Close';
+            closeButton.style.marginTop = '10px';
+            closeButton.style.fontSize = '1rem';
+            closeButton.style.padding = '10px 20px';
+            closeButton.style.cursor = 'pointer';
+
+            closeButton.onclick = () => {
+                document.body.removeChild(alertDiv);
+            };
+
+            alertDiv.appendChild(img);
+            alertDiv.appendChild(closeButton);
+            document.body.appendChild(alertDiv);
         }
 
         startButton.addEventListener('click', () => {
